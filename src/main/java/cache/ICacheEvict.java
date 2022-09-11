@@ -1,7 +1,5 @@
 package cache;
 
-import cache.context.evict.ICacheEvictContext;
-
 /**
  * 缓存刷新和淘汰策略
  *
@@ -16,7 +14,7 @@ public interface ICacheEvict<K, V> {
      * @return 被移除的明细，没有时返回 null
      * @since 0.0.2
      */
-   ICacheEntry<K, V> evict(Cache<K,V> cache);
+   ICacheEntry<K, V> evict(ICacheEvictContext<K,V> context);
 
     /**
      * 更新 key 信息

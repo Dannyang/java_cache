@@ -2,8 +2,11 @@ package cache.core;
 
 import cache.Cache;
 import cache.ICacheEvict;
+import cache.ICacheEvictContext;
 import cache.ICacheExpire;
+import cache.context.evict.CacheEvictContext;
 
+import java.security.Key;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +29,11 @@ public class CacheCore<K, V> implements Cache<K, V> {
         // 当前时间+expireTime = k-v过期的时间点
         long theTimeToExpire = System.currentTimeMillis() + expireTime;
         this.expireAt(key, theTimeToExpire);
+        return this;
+    }
+
+    public Cache<K, V> setSizeLimit(int sizeLimit) {
+        this.sizeLimit = sizeLimit;
         return this;
     }
 
@@ -90,6 +98,9 @@ public class CacheCore<K, V> implements Cache<K, V> {
 
     @Override
     public V put(K key, V value) {
+        CacheEvictContext<K, V> cacheEvictContext = new CacheEvictContext<>();
+        cacheEvictContext.setCache(this).setKey(key).setLimit(this.sizeLimit);
+        this.iCacheEvict.evict(cacheEvictContext);
         return this.cacheMap.put(key, value);
     }
 

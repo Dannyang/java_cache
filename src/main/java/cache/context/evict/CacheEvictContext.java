@@ -1,6 +1,7 @@
 package cache.context.evict;
 
 import cache.Cache;
+import cache.ICacheEvictContext;
 
 public class CacheEvictContext<K, V> implements ICacheEvictContext<K, V> {
 
@@ -21,7 +22,6 @@ public class CacheEvictContext<K, V> implements ICacheEvictContext<K, V> {
         return this;
     }
 
-    @Override
     public Cache<K, V> cache() {
         return cache;
     }
